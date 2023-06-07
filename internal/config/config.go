@@ -11,9 +11,6 @@ import (
 type Config struct {
 	Server   ServerConfig
 	Postgres PostgresConfig
-	Redis    RedisConfig
-	Cookie   Cookie
-	Session  Session
 	Logger   Logger
 }
 
@@ -21,10 +18,7 @@ type Config struct {
 type ServerConfig struct {
 	AppVersion        string
 	Port              string
-	PprofPort         string
 	Mode              string
-	JwtSecretKey      string
-	CookieName        string
 	ReadTimeout       time.Duration
 	WriteTimeout      time.Duration
 	SSL               bool
@@ -55,34 +49,6 @@ type PostgresConfig struct {
 	PostgresqlDbname   string
 	PostgresqlSSLMode  bool
 	PgDriver           string
-}
-
-// RedisConfig Redis config
-type RedisConfig struct {
-	RedisAddr      string
-	RedisPassword  string
-	RedisDB        string
-	RedisDefaultdb string
-	MinIdleConns   int
-	PoolSize       int
-	PoolTimeout    int
-	Password       string
-	DB             int
-}
-
-// Cookie config
-type Cookie struct {
-	Name     string
-	MaxAge   int
-	Secure   bool
-	HTTPOnly bool
-}
-
-// Session config
-type Session struct {
-	Prefix string
-	Name   string
-	Expire int
 }
 
 // LoadConfig Load config file from given path
