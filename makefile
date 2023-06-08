@@ -2,7 +2,7 @@
 # Main
 
 run:
-	go run cmd/cutter/main.go
+	go run cmd/cutter/main.go -a ":5001"
 
 run_db:
 	 go run cmd/cutter/main.go -d="postgres://postgres:55555@127.0.0.1:5432/urlcutter"

@@ -2,6 +2,13 @@ package app
 
 import (
 	"fmt"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/22Fariz22/urlcutter/internal/config"
 	"github.com/22Fariz22/urlcutter/internal/interceptors"
 	"github.com/22Fariz22/urlcutter/internal/url"
@@ -14,12 +21,6 @@ import (
 	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"google.golang.org/grpc"
-	"log"
-	"net"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 type App struct {
@@ -76,7 +77,7 @@ func (a *App) Run() error {
 	urlcutter.RegisterURLCutterServiceServer(server, gRPCServer)
 
 	go func() {
-		log.Info("Server is listening on port: %v", ":5001")
+		log.Info("Server is listening on port: %v", a.cfg.RunAddress)
 		if err := server.Serve(l); err != nil {
 			log.Fatal(err)
 		}
