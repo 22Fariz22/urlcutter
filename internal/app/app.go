@@ -7,6 +7,7 @@ import (
 	"github.com/22Fariz22/urlcutter/internal/url"
 	service "github.com/22Fariz22/urlcutter/internal/url/delivery/grpc"
 	"github.com/22Fariz22/urlcutter/internal/url/repository"
+	"github.com/22Fariz22/urlcutter/internal/url/usecase"
 	"github.com/22Fariz22/urlcutter/pkg/logger"
 	"github.com/22Fariz22/urlcutter/pkg/postgres"
 	urlcutter "github.com/22Fariz22/urlcutter/proto"
@@ -35,7 +36,7 @@ func NewApp(cfg *config.Config) *App {
 		return &App{
 			cfg:        cfg,
 			httpServer: nil,
-			UC:         inMemory,
+			UC:         usecase.NewUseCase(inMemory),
 		}
 	} else {
 		// Repository
@@ -48,7 +49,7 @@ func NewApp(cfg *config.Config) *App {
 		return &App{
 			cfg:        cfg,
 			httpServer: nil,
-			UC:         repo,
+			UC:         usecase.NewUseCase(repo),
 		}
 	}
 }

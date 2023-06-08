@@ -1,6 +1,10 @@
 package repository
 
-import "sync"
+import (
+	"context"
+	"fmt"
+	"sync"
+)
 
 type MemoryStorage struct {
 	storage map[string]string
@@ -21,10 +25,11 @@ func NewMemory() *MemoryStorage {
 //}
 //
 
-func (m *MemoryStorage) Save() {
+func (m *MemoryStorage) Save(ctx context.Context) {
+	fmt.Println("here in-memory repo Save()")
 
 }
 
-func (m *MemoryStorage) Get() {
-
+func (m *MemoryStorage) Get(ctx context.Context) {
+	fmt.Println("here in-memory repo Get()")
 }

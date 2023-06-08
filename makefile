@@ -2,7 +2,10 @@
 # Main
 
 run:
-	go run ./cmd/passbook/main.go
+	go run cmd/cutter/main.go
+
+run_db:
+	 go run cmd/cutter/main.go -d="postgres://postgres:55555@127.0.0.1:5432/urlcutter"
 
 test:
 	go test -cover ./...
