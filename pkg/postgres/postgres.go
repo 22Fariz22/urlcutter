@@ -1,43 +1,90 @@
 package postgres
 
 import (
+	"context"
 	"fmt"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"log"
 	"time"
-
-	"github.com/22Fariz22/urlcutter/internal/config"
-	_ "github.com/jackc/pgx/stdlib"
-	"github.com/jmoiron/sqlx"
 )
 
 const (
-	maxOpenConns    = 60
-	connMaxLifetime = 120
-	maxIdleConns    = 30
-	connMaxIdleTime = 20
+	_defaultMaxPoolSize  = 1
+	_defaultConnAttempts = 10
+	_defaultConnTimeout  = time.Second
 )
 
-// NewPsqlDB Return new Postgresql db instance
-func NewPsqlDB(c *config.Config) (*sqlx.DB, error) {
-	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
-		c.Postgres.PostgresqlHost,
-		c.Postgres.PostgresqlPort,
-		c.Postgres.PostgresqlUser,
-		c.Postgres.PostgresqlDbname,
-		c.Postgres.PostgresqlPassword,
-	)
+// Postgres -.
+type Postgres struct {
+	maxPoolSize  int
+	connAttempts int
+	connTimeout  time.Duration
 
-	db, err := sqlx.Connect(c.Postgres.PgDriver, dataSourceName)
+	//Builder squirrel.StatementBuilderType
+	Pool *pgxpool.Pool
+}
+
+// New -.
+func New(url string, opts ...Option) (*Postgres, error) {
+	pg := &Postgres{
+		maxPoolSize:  _defaultMaxPoolSize,
+		connAttempts: _defaultConnAttempts,
+		connTimeout:  _defaultConnTimeout,
+	}
+
+	// Custom options
+	for _, opt := range opts {
+		opt(pg)
+	}
+
+	//pg.Builder = squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
+
+	poolConfig, err := pgxpool.ParseConfig(url)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("postgres - NewPostgres - pgxpool.ParseConfig: %w", err)
 	}
 
-	db.SetMaxOpenConns(maxOpenConns)
-	db.SetConnMaxLifetime(connMaxLifetime * time.Second)
-	db.SetMaxIdleConns(maxIdleConns)
-	db.SetConnMaxIdleTime(connMaxIdleTime * time.Second)
-	if err = db.Ping(); err != nil {
-		return nil, err
+	poolConfig.MaxConns = int32(pg.maxPoolSize)
+
+	for pg.connAttempts > 0 {
+		pg.Pool, err = pgxpool.NewWithConfig(context.Background(), poolConfig)
+		if err == nil {
+			break
+		}
+
+		log.Printf("Postgres is trying to connect, attempts left: %d", pg.connAttempts)
+
+		time.Sleep(pg.connTimeout)
+
+		pg.connAttempts--
 	}
 
-	return db, nil
+	if err != nil {
+		return nil, fmt.Errorf("postgres - NewPostgres - connAttempts == 0: %w", err)
+	}
+
+	createTables(pg.Pool)
+
+	return pg, nil
+}
+
+// Close -.
+func (p *Postgres) Close() {
+	if p.Pool != nil {
+		p.Pool.Close()
+	}
+}
+
+func createTables(pool *pgxpool.Pool) (*Postgres, error) {
+	_, err := pool.Exec(context.Background(), `
+		CREATE TABLE IF NOT EXISTS neo_counts(
+		date VARCHAR(12) UNIQUE NOT NULL,
+		count INT
+);  
+`)
+	if err != nil {
+		log.Printf("Unable to create table: %v\n", err)
+		return nil, err
+	}
+	return nil, err
 }

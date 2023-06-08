@@ -1,6 +1,6 @@
 package url
 
-type UseCase interface {
+type Repo interface {
 	Save()
 	Get()
 }

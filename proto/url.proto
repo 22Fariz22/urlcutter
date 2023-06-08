@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package urlcutter;
+
+option go_package = "github.com/22fariz22/urlcutter";
+
+
+message LongURL {
+  string longURL=1;
+}
+
+message ShortURL{
+  string shortURL=1;
+}
+
+service URLCutterService{
+  rpc Post(LongURL) returns(ShortURL);
+  rpc Get(ShortURL) returns(LongURL);
+}
