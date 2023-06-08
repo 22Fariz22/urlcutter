@@ -5,6 +5,7 @@ package urlcutter;
 option go_package = "github.com/22fariz22/urlcutter";
 
 
+
 message LongURL {
   string longURL=1;
 }

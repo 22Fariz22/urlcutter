@@ -4,7 +4,9 @@ go 1.20
 
 require (
 	github.com/caarlos0/env/v6 v6.10.1
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/jackc/pgx/v5 v5.3.1
+	github.com/opentracing/opentracing-go v1.1.0
 	github.com/rs/zerolog v1.29.1
 	google.golang.org/grpc v1.55.0
 	google.golang.org/protobuf v1.30.0
