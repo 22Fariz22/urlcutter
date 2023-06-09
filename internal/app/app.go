@@ -39,19 +39,18 @@ func NewApp(cfg *config.Config) *App {
 			httpServer: nil,
 			UC:         usecase.NewUseCase(inMemory),
 		}
-	} else {
-		// Repository
-		db, err := postgres.New(cfg.DatabaseURI, postgres.MaxPoolSize(2))
-		if err != nil {
-			log.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
-		}
+	}
+	// Repository
+	db, err := postgres.New(cfg.DatabaseURI, postgres.MaxPoolSize(2))
+	if err != nil {
+		log.Fatal(fmt.Errorf("app - Run - postgres.New: %w", err))
+	}
 
-		repo := repository.NewPGRepository(db)
-		return &App{
-			cfg:        cfg,
-			httpServer: nil,
-			UC:         usecase.NewUseCase(repo),
-		}
+	repo := repository.NewPGRepository(db)
+	return &App{
+		cfg:        cfg,
+		httpServer: nil,
+		UC:         usecase.NewUseCase(repo),
 	}
 }
 

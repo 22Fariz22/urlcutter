@@ -3,9 +3,10 @@ package postgres
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"log"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 const (
@@ -63,7 +64,7 @@ func New(url string, opts ...Option) (*Postgres, error) {
 		return nil, fmt.Errorf("postgres - NewPostgres - connAttempts == 0: %w", err)
 	}
 
-	createTables(pg.Pool)
+	//createTables(pg.Pool)
 
 	return pg, nil
 }
@@ -75,16 +76,16 @@ func (p *Postgres) Close() {
 	}
 }
 
-func createTables(pool *pgxpool.Pool) (*Postgres, error) {
-	_, err := pool.Exec(context.Background(), `
-		CREATE TABLE IF NOT EXISTS neo_counts(
-		date VARCHAR(12) UNIQUE NOT NULL,
-		count INT
-);  
-`)
-	if err != nil {
-		log.Printf("Unable to create table: %v\n", err)
-		return nil, err
-	}
-	return nil, err
-}
+//func createTables(pool *pgxpool.Pool) (*Postgres, error) {
+//	_, err := pool.Exec(context.Background(), `
+//		CREATE TABLE IF NOT EXISTS neo_counts(
+//		date VARCHAR(12) UNIQUE NOT NULL,
+//		count INT
+//);
+//`)
+//	if err != nil {
+//		log.Printf("Unable to create table: %v\n", err)
+//		return nil, err
+//	}
+//	return nil, err
+//}

@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	RunAddress  string `env:"RUN_ADDRESS"`
+	BaseURL     string `env:"BASE_URL" envDefault:"http://localhost:8080"`
 	DatabaseURI string `env:"DATABASE_URI"`
 }
 
@@ -15,6 +16,7 @@ func NewConfig() *Config {
 	cfg := Config{}
 
 	flag.StringVar(&cfg.RunAddress, "a", "", "server address")
+
 	flag.StringVar(&cfg.DatabaseURI, "d", "", "database address")
 
 	flag.Parse()

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"sync"
 )
 
@@ -21,17 +22,16 @@ func NewMemory() *MemoryStorage {
 
 func (m *MemoryStorage) Save(ctx context.Context, long, short string) (string, error) {
 	fmt.Println("here in-memory repo Save()")
-	var ErrAlreadyExists = errors.New("this URL already exists")
 
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
 
 	if val, ok := m.storage[long]; ok {
 		fmt.Println("already exist in mermory:", val)
-		return m.storage[long], ErrAlreadyExists
+		return m.storage[long], grpcerrors.ErrURLExists
 	}
 
-	m.storage[long] = "http://localhost:8080/" + short
+	m.storage[long] = short
 
 	return short, nil
 }
