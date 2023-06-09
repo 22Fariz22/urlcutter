@@ -23,14 +23,14 @@ func (s *service) Post(ctx context.Context, url *pb.LongURL) (*pb.ShortURL, erro
 	if err != nil {
 		if err == grpcerrors.ErrURLExists {
 			fmt.Println("handler: already exists:", short)
-			return &pb.ShortURL{ShortURL: short}, nil //status.Errorf(grpcerrors.ParseGRPCErrStatusCode(err), "UC.Save: %v", err)
+			return &pb.ShortURL{ShortURL: short}, nil
 		}
 		return nil, status.Error(codes.Internal, "internal server error")
 	}
 
-	shortUrl := short
+	shortURL := short
 
-	return &pb.ShortURL{ShortURL: shortUrl}, nil
+	return &pb.ShortURL{ShortURL: shortURL}, nil
 }
 
 func (s *service) Get(ctx context.Context, url *pb.ShortURL) (*pb.LongURL, error) {

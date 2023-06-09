@@ -1,6 +1,7 @@
 package entity
 
-type Url struct {
+// URL entity
+type URL struct {
 	LongURL  string
 	ShortURL string
 }

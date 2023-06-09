@@ -14,6 +14,7 @@ type service struct {
 	UC  url.UseCase
 }
 
+// NewServerGRPC grpc service constructor
 func NewServerGRPC(logger logger.Interface, cfg *config.Config, uc url.UseCase) *service {
 	return &service{
 		UnimplementedURLCutterServiceServer: pb.UnimplementedURLCutterServiceServer{},

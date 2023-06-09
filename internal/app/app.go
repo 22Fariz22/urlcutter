@@ -23,18 +23,18 @@ import (
 	"google.golang.org/grpc"
 )
 
-type App struct {
+type app struct {
 	cfg        *config.Config
 	httpServer *http.Server
 	UC         url.UseCase
 }
 
-func NewApp(cfg *config.Config) *App {
+func NewApp(cfg *config.Config) *app {
 	if cfg.DatabaseURI == "" {
 		//in-memory
 		inMemory := repository.NewMemory()
 
-		return &App{
+		return &app{
 			cfg:        cfg,
 			httpServer: nil,
 			UC:         usecase.NewUseCase(inMemory),
@@ -47,14 +47,15 @@ func NewApp(cfg *config.Config) *App {
 	}
 
 	repo := repository.NewPGRepository(db)
-	return &App{
+	return &app{
 		cfg:        cfg,
 		httpServer: nil,
 		UC:         usecase.NewUseCase(repo),
 	}
 }
 
-func (a *App) Run() error {
+// Run service
+func (a *app) Run() error {
 	log := logger.New("debug")
 	im := interceptors.NewInterceptorManager(log, a.cfg)
 

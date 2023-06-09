@@ -11,15 +11,17 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-type PGRepository struct {
+type pgRepository struct {
 	*postgres.Postgres
 }
 
-func NewPGRepository(db *postgres.Postgres) *PGRepository {
-	return &PGRepository{db}
+// NewPGRepository create postgres storage
+func NewPGRepository(db *postgres.Postgres) *pgRepository {
+	return &pgRepository{db}
 }
 
-func (p *PGRepository) Save(ctx context.Context, long, short string) (string, error) {
+//Save url to db
+func (p *pgRepository) Save(ctx context.Context, long, short string) (string, error) {
 	fmt.Println("here PG repo Save()")
 	var alreadyExistValue string
 
@@ -42,7 +44,8 @@ func (p *PGRepository) Save(ctx context.Context, long, short string) (string, er
 	return alreadyExistValue, nil
 }
 
-func (p *PGRepository) Get(ctx context.Context, short string) (string, error) {
+//Get url from db
+func (p *pgRepository) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here PG repo Get()")
 
 	var existLong string

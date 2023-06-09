@@ -6,12 +6,14 @@ import (
 	"log"
 )
 
+// Config config
 type Config struct {
 	RunAddress  string `env:"RUN_ADDRESS"`
 	BaseURL     string `env:"BASE_URL" envDefault:"http://localhost:8080"`
 	DatabaseURI string `env:"DATABASE_URI"`
 }
 
+// NewConfig create configuration
 func NewConfig() *Config {
 	cfg := Config{}
 

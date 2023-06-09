@@ -7,19 +7,20 @@ import (
 	"sync"
 )
 
-type MemoryStorage struct {
+type memoryStorage struct {
 	storage map[string]string
 	mutex   sync.RWMutex
 }
 
 // NewMemory создание структуры для инмемори типа
-func NewMemory() *MemoryStorage {
-	return &MemoryStorage{
+func NewMemory() *memoryStorage {
+	return &memoryStorage{
 		storage: map[string]string{},
 	}
 }
 
-func (m *MemoryStorage) Save(ctx context.Context, long, short string) (string, error) {
+// Save url to in-memory
+func (m *memoryStorage) Save(ctx context.Context, long, short string) (string, error) {
 	fmt.Println("here in-memory repo Save()")
 
 	m.mutex.RLock()
@@ -35,7 +36,8 @@ func (m *MemoryStorage) Save(ctx context.Context, long, short string) (string, e
 	return short, nil
 }
 
-func (m *MemoryStorage) Get(ctx context.Context, short string) (string, error) {
+// Get url from in-memory
+func (m *memoryStorage) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here in-memory repo Get()")
 	fmt.Println("storage:", m.storage)
 
