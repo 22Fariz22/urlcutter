@@ -7,6 +7,7 @@ import (
 	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"github.com/22Fariz22/urlcutter/pkg/postgres"
 	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
@@ -44,5 +45,16 @@ func (p *PGRepository) Save(ctx context.Context, long, short string) (string, er
 func (p *PGRepository) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here PG repo Get()")
 
-	return "", nil
+	var existLong string
+	err := p.Pool.QueryRow(ctx, "select long from urls where short=$1", short).Scan(&existLong)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return "", grpcerrors.ErrDoesNotExist
+		}
+		return "", grpcerrors.ErrPG
+	}
+
+	fmt.Println("existLong:", existLong)
+
+	return existLong, nil
 }

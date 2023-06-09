@@ -14,7 +14,11 @@ var (
 	//ErrURLExists URL exists
 	ErrURLExists = errors.New("URL already exists")
 	//ErrBadShortURL short url incorrect, less then 10 symbols
-	ErrBadShortURL = errors.New("short url incorrect, less then 10 symbols")
+	ErrBadShortURL  = errors.New("short url incorrect, less then 10 symbols")
+	ErrDoesNotExist = errors.New("this URL does not exist")
+
+	//ErrPGerror from select db
+	ErrPG = errors.New("error from select PG")
 )
 
 // ParseGRPCErrStatusCode Parse error and get code
@@ -30,6 +34,9 @@ func ParseGRPCErrStatusCode(err error) codes.Code {
 	case errors.Is(err, context.DeadlineExceeded):
 		return codes.DeadlineExceeded
 	case errors.Is(err, ErrURLExists):
+		return codes.AlreadyExists
+
+	case errors.Is(err, ErrDoesNotExist):
 		return codes.AlreadyExists
 	}
 	return codes.Internal

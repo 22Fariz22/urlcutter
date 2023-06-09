@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"sync"
@@ -40,8 +39,6 @@ func (m *MemoryStorage) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here in-memory repo Get()")
 	fmt.Println("storage:", m.storage)
 
-	var ErrDoesNotExist = errors.New("this URL does not exist")
-
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
 
@@ -52,5 +49,5 @@ func (m *MemoryStorage) Get(ctx context.Context, short string) (string, error) {
 		fmt.Println(k, v)
 	}
 
-	return "", ErrDoesNotExist
+	return "", grpcerrors.ErrDoesNotExist
 }
