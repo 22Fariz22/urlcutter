@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"github.com/22Fariz22/urlcutter/pkg/postgres"
 	"github.com/jackc/pgerrcode"
@@ -20,7 +21,7 @@ func NewPGRepository(db *postgres.Postgres) *pgRepository {
 	return &pgRepository{db}
 }
 
-//Save url to db
+// Save url to db
 func (p *pgRepository) Save(ctx context.Context, long, short string) (string, error) {
 	fmt.Println("here PG repo Save()")
 	var alreadyExistValue string
@@ -44,7 +45,7 @@ func (p *pgRepository) Save(ctx context.Context, long, short string) (string, er
 	return alreadyExistValue, nil
 }
 
-//Get url from db
+// Get url from db
 func (p *pgRepository) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here PG repo Get()")
 
