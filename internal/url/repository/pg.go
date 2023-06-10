@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"github.com/22Fariz22/urlcutter/pkg/postgres"
@@ -23,7 +22,6 @@ func NewPGRepository(db *postgres.Postgres) *pgRepository {
 
 // Save url to db
 func (p *pgRepository) Save(ctx context.Context, long, short string) (string, error) {
-	fmt.Println("here PG repo Save()")
 	var alreadyExistValue string
 
 	//вставляем урл, если такой уже существует, то вернем ошибку.Если новый урл,то вернем шортурл
@@ -36,30 +34,23 @@ func (p *pgRepository) Save(ctx context.Context, long, short string) (string, er
 			//делаем запрос чтобы вернуть существующий шортурл
 			_ = p.Pool.QueryRow(context.Background(),
 				selectExistURLQuery, long).Scan(&alreadyExistValue)
-			fmt.Println("вернем уже сущемтвующий:", alreadyExistValue)
 			return alreadyExistValue, grpcerrors.ErrURLExists
 		}
 	}
 
-	fmt.Println("alreadyExistValue", alreadyExistValue)
 	return alreadyExistValue, nil
 }
 
 // Get url from db
 func (p *pgRepository) Get(ctx context.Context, short string) (string, error) {
-	fmt.Println("here PG repo Get()")
-
 	var existLong string
 	err := p.Pool.QueryRow(ctx, getURLQuery, short).Scan(&existLong)
-	fmt.Println("err get:", err)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return "", grpcerrors.ErrDoesNotExist
 		}
 		return "", grpcerrors.ErrPG
 	}
-
-	fmt.Println("existLong:", existLong)
 
 	return existLong, nil
 }

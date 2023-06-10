@@ -23,7 +23,6 @@ func Test_pgRepository_Save(t *testing.T) {
 
 	columns := []string{"short"}
 	rows := sqlmock.NewRows(columns).AddRow(
-		//"mock_long_url",
 		"mock_short_url",
 	)
 
@@ -59,7 +58,7 @@ func Test_pgRepository_Get(t *testing.T) {
 
 	longUrl, err := pgRepo.Get(context.Background(), "mock_short_url")
 
-	//require.NoError(t, err)
+	require.NotNil(t, err)
 	require.NotNil(t, longUrl)
 
 }

@@ -22,13 +22,11 @@ func NewMemory() *memoryStorage {
 
 // Save url to in-memory
 func (m *memoryStorage) Save(ctx context.Context, long, short string) (string, error) {
-	fmt.Println("here in-memory repo Save()")
 
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
 
-	if val, ok := m.storage[long]; ok {
-		fmt.Println("already exist in mermory:", val)
+	if _, ok := m.storage[long]; ok {
 		return m.storage[long], grpcerrors.ErrURLExists
 	}
 
