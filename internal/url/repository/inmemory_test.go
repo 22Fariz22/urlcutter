@@ -44,7 +44,6 @@ func Test_memoryStorage_Save(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &memoryStorage{
 				storage: tt.fields.storage,
-				mutex:   tt.fields.mutex,
 			}
 			got, err := m.Save(tt.args.ctx, tt.args.long, tt.args.short)
 			if (err != nil) != tt.wantErr {
@@ -95,7 +94,6 @@ func Test_memoryStorage_Get(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			m := &memoryStorage{
 				storage: tt.fields.storage,
-				mutex:   tt.fields.mutex,
 			}
 			got, err := m.Get(tt.args.ctx, tt.args.short)
 			if (err != nil) != tt.wantErr {
