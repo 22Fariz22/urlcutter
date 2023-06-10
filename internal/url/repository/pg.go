@@ -28,14 +28,14 @@ func (p *pgRepository) Save(ctx context.Context, long, short string) (string, er
 
 	//вставляем урл, если такой уже существует, то вернем ошибку.Если новый урл,то вернем шортурл
 	err := p.Pool.QueryRow(ctx,
-		`insert into urls (long,short) values ($1,$2) returning short`, long, short).Scan(&alreadyExistValue)
+		saveURLQuery, long, short).Scan(&alreadyExistValue)
 
 	var pgErr *pgconn.PgError
 	if err != nil {
 		if errors.As(err, &pgErr) && pgErr.Code == pgerrcode.UniqueViolation {
 			//делаем запрос чтобы вернуть существующий шортурл
 			_ = p.Pool.QueryRow(context.Background(),
-				`SELECT short FROM urls where long = $1;`, long).Scan(&alreadyExistValue)
+				selectExistURLQuery, long).Scan(&alreadyExistValue)
 			fmt.Println("вернем уже сущемтвующий:", alreadyExistValue)
 			return alreadyExistValue, grpcerrors.ErrURLExists
 		}
@@ -50,7 +50,8 @@ func (p *pgRepository) Get(ctx context.Context, short string) (string, error) {
 	fmt.Println("here PG repo Get()")
 
 	var existLong string
-	err := p.Pool.QueryRow(ctx, "select long from urls where short=$1", short).Scan(&existLong)
+	err := p.Pool.QueryRow(ctx, getURLQuery, short).Scan(&existLong)
+	fmt.Println("err get:", err)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return "", grpcerrors.ErrDoesNotExist

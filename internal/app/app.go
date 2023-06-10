@@ -29,6 +29,7 @@ type app struct {
 	UC         url.UseCase
 }
 
+// NewApp create
 func NewApp(cfg *config.Config) *app {
 	if cfg.DatabaseURI == "" {
 		//in-memory

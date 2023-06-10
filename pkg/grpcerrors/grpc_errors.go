@@ -14,7 +14,7 @@ var (
 	//ErrURLExists URL exists
 	ErrURLExists = errors.New("URL already exists")
 	//ErrDoesNotExist url not found
-	ErrDoesNotExist = errors.New("this URL does not exist")
+	ErrDoesNotExist = errors.New("this URL does not found")
 
 	//ErrPG error from select db
 	ErrPG = errors.New("error from select PG")
