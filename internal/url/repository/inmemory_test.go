@@ -2,14 +2,12 @@ package repository
 
 import (
 	"context"
-	"sync"
 	"testing"
 )
 
 func Test_memoryStorage_Save(t *testing.T) {
 	type fields struct {
 		storage map[string]string
-		mutex   sync.RWMutex
 	}
 	newMem := NewMemory()
 
@@ -29,7 +27,6 @@ func Test_memoryStorage_Save(t *testing.T) {
 			name: "ok save",
 			fields: fields{
 				storage: newMem.storage,
-				mutex:   newMem.mutex,
 			},
 			args: args{
 				ctx:   context.Background(),
@@ -60,7 +57,6 @@ func Test_memoryStorage_Save(t *testing.T) {
 func Test_memoryStorage_Get(t *testing.T) {
 	type fields struct {
 		storage map[string]string
-		mutex   sync.RWMutex
 	}
 
 	newMem := NewMemory()
@@ -80,7 +76,6 @@ func Test_memoryStorage_Get(t *testing.T) {
 			name: "ok get",
 			fields: fields{
 				storage: newMem.storage,
-				mutex:   newMem.mutex,
 			},
 			args: args{
 				ctx:   context.Background(),
