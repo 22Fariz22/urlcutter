@@ -25,10 +25,9 @@ migrate_down:
 # ==============================================================================
 # Docker compose commands
 
-develop:
-	echo "Starting docker environment"
-	docker-compose -f docker-compose.yml up --build
 
-local:
-	echo "Starting local environment"
-	docker-compose -f docker-compose.local.yml up --build
+compose-up: ### Run docker-compose
+	docker-compose up --build -d postgres rabbitmq && docker-compose logs -f
+
+compose-down: ### Down docker-compose
+	docker-compose down --remove-orphans
