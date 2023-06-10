@@ -56,9 +56,9 @@ func Test_pgRepository_Get(t *testing.T) {
 
 	mock.ExpectQuery(getURLQuery).WithArgs("mock_short_url").WillReturnRows(rows)
 
-	longUrl, err := pgRepo.Get(context.Background(), "mock_short_url")
+	long, err := pgRepo.Get(context.Background(), "mock_short_url")
 
 	require.NotNil(t, err)
-	require.NotNil(t, longUrl)
+	require.NotNil(t, long)
 
 }

@@ -21,3 +21,14 @@ migrate_up:
 
 migrate_down:
 	migrate -path migrations/ -database "postgresql://postgres:55555@localhost:5432/urlcutter?sslmode=disable" -verbose down
+
+# ==============================================================================
+# Docker compose commands
+
+develop:
+	echo "Starting docker environment"
+	docker-compose -f docker-compose.yml up --build
+
+local:
+	echo "Starting local environment"
+	docker-compose -f docker-compose.local.yml up --build
