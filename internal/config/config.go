@@ -9,7 +9,7 @@ import (
 
 // Config config
 type Config struct {
-	RunAddress  string `env:"RUN_ADDRESS"`
+	RunAddress  string `env:"RUN_ADDRESS" envDefault:":8080" "`
 	BaseURL     string `env:"BASE_URL" envDefault:"http://localhost:8080"`
 	DatabaseURI string `env:"DATABASE_URI"`
 }

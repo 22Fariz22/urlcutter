@@ -2,10 +2,10 @@
 # Main
 
 run:
-	go run cmd/cutter/main.go -a ":5001"
+	go run cmd/app/main.go
 
 run_db:
-	 go run cmd/cutter/main.go -d="postgres://postgres:55555@127.0.0.1:5432/urlcutter"
+	 go run cmd/app/main.go -d="postgres://postgres:55555@127.0.0.1:5432/urlcutter"
 
 test:
 	go test -cover ./...
@@ -26,8 +26,12 @@ migrate_down:
 # Docker compose commands
 
 
+# build app and pull postgres from docker
+docker-build:
+	docker build -t app:1.0 . && docker pull postgres
+
 compose-up: ### Run docker-compose
-	docker-compose up --build -d postgres && docker-compose logs -f
+	 docker-compose up --build -d postgres &&  docker-compose up --build -d app &&  docker-compose logs -f
 
 compose-down: ### Down docker-compose
 	docker-compose down --remove-orphans

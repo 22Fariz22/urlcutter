@@ -60,7 +60,7 @@ func (a *app) Run() error {
 	log := logger.New("debug")
 	im := interceptors.NewInterceptorManager(log, a.cfg)
 
-	l, err := net.Listen("tcp", ":5001")
+	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		return err
 	}
