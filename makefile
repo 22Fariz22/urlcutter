@@ -17,10 +17,10 @@ test-html:
 # Go migrate postgresql
 
 migrate_up:
-	migrate -path migrations/ -database "postgresql://user:pass@localhost:5432/urlcutter?sslmode=disable" -verbose up
+	migrate -path migrations/ -database "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable" -verbose up
 
 migrate_down:
-	migrate -path migrations/ -database "postgresql://user:pass@localhost:5432/urlcutter?sslmode=disable" -verbose down
+	migrate -path migrations/ -database "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable" -verbose down
 
 # ==============================================================================
 # Docker compose commands
