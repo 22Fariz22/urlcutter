@@ -32,7 +32,7 @@ func Test_service_Post(t *testing.T) {
 		id, err := gonanoid.Nanoid(10)
 		require.NoError(t, err)
 
-		UC.EXPECT().Save(ctx, gomock.Any(), gomock.Any()).Return(cfg.BaseURL+"/"+id, nil)
+		UC.EXPECT().Save(ctx, nil, gomock.Any(), gomock.Any()).Return(cfg.BaseURL+"/"+id, nil)
 
 		response, err := serverGRPC.Post(ctx, &urlcutter.LongURL{LongURL: "mock_long"})
 		require.NoError(t, err)
@@ -56,7 +56,7 @@ func Test_service_Get(t *testing.T) {
 
 		ctx := context.Background()
 
-		UC.EXPECT().Get(ctx, gomock.Any()).Return("", nil)
+		UC.EXPECT().Get(ctx, nil, gomock.Any()).Return("", nil)
 
 		response, err := serverGRPC.Get(ctx, &urlcutter.ShortURL{ShortURL: "mock_short_url"})
 		require.NoError(t, err)
