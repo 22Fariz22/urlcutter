@@ -8,6 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
+	logger "github.com/22Fariz22/urlcutter/pkg/logger"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,31 +36,31 @@ func (m *MockRepo) EXPECT() *MockRepoMockRecorder {
 }
 
 // Get mocks base method.
-func (m *MockRepo) Get(ctx context.Context, short string) (string, error) {
+func (m *MockRepo) Get(ctx context.Context, l logger.Interface, short string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", ctx, short)
+	ret := m.ctrl.Call(m, "Get", ctx, l, short)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockRepoMockRecorder) Get(ctx, short interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) Get(ctx, l, short interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockRepo)(nil).Get), ctx, short)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockRepo)(nil).Get), ctx, l, short)
 }
 
 // Save mocks base method.
-func (m *MockRepo) Save(ctx context.Context, long, short string) (string, error) {
+func (m *MockRepo) Save(ctx context.Context, l logger.Interface, long, short string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Save", ctx, long, short)
+	ret := m.ctrl.Call(m, "Save", ctx, l, long, short)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Save indicates an expected call of Save.
-func (mr *MockRepoMockRecorder) Save(ctx, long, short interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) Save(ctx, l, long, short interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockRepo)(nil).Save), ctx, long, short)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Save", reflect.TypeOf((*MockRepo)(nil).Save), ctx, l, long, short)
 }

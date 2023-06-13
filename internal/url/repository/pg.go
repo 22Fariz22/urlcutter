@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"github.com/22Fariz22/urlcutter/pkg/logger"
 
 	"github.com/22Fariz22/urlcutter/pkg/grpcerrors"
 	"github.com/22Fariz22/urlcutter/pkg/postgres"
@@ -21,7 +22,7 @@ func NewPGRepository(db *postgres.Postgres) *pgRepository {
 }
 
 // Save url to db
-func (p *pgRepository) Save(ctx context.Context, long, short string) (string, error) {
+func (p *pgRepository) Save(ctx context.Context, l logger.Interface, long, short string) (string, error) {
 	var alreadyExistValue string
 
 	//вставляем урл, если такой уже существует, то вернем ошибку.Если новый урл,то вернем шортурл
@@ -42,7 +43,7 @@ func (p *pgRepository) Save(ctx context.Context, long, short string) (string, er
 }
 
 // Get url from db
-func (p *pgRepository) Get(ctx context.Context, short string) (string, error) {
+func (p *pgRepository) Get(ctx context.Context, l logger.Interface, short string) (string, error) {
 	var existLong string
 	err := p.Pool.QueryRow(ctx, getURLQuery, short).Scan(&existLong)
 	if err != nil {

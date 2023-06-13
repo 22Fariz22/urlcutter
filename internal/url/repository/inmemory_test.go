@@ -42,7 +42,7 @@ func Test_memoryStorage_Save(t *testing.T) {
 			m := &memoryStorage{
 				storage: tt.fields.storage,
 			}
-			got, err := m.Save(tt.args.ctx, tt.args.long, tt.args.short)
+			got, err := m.Save(tt.args.ctx, nil, tt.args.long, tt.args.short)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Save() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -90,7 +90,7 @@ func Test_memoryStorage_Get(t *testing.T) {
 			m := &memoryStorage{
 				storage: tt.fields.storage,
 			}
-			got, err := m.Get(tt.args.ctx, tt.args.short)
+			got, err := m.Get(tt.args.ctx, nil, tt.args.short)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
